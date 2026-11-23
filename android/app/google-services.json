@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "586361993330",
+    "project_id": "deliveazone-8a8d8",
+    "storage_bucket": "deliveazone-8a8d8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586361993330:android:453d8cfd1cf624446eeaeb",
+        "android_client_info": {
+          "package_name": "com.deliveazone.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5M21bumcaN02cmEjpdUB3EkPCjPPqjTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
