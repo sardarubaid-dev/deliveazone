@@ -10,9 +10,9 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: com.deliveazone.com
+      groups:
+        # Codemagic me secret variable CERTIFICATE_PRIVATE_KEY is group me rakhein
+        - signing
       vars:
         APP_STORE_APPLE_ID: 6839395780   # App Store Connect > App Information > Apple ID (number)
     scripts:
@@ -20,7 +20,7 @@ workflows:
         script: |
           keychain initialize
           app-store-connect fetch-signing-files "com.deliveazone.com" \
-            --type IOS_APP_STORE --create
+            --type IOS_APP_STORE --certificate-key=@env:CERTIFICATE_PRIVATE_KEY --create
           keychain add-certificates
           xcode-project use-profiles
       - name: Get Flutter packages
