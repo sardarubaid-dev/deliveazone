@@ -1,25 +1,47 @@
 workflows:
-  ios-build:
-    name: iOS Release Build
+  ios-release:
+    name: iOS App Store Release
     instance_type: mac_mini_m2
-    max_build_duration: 30
+    max_build_duration: 60
+    integrations:
+      # Codemagic > Teams > Integrations me App Store Connect API key is naam se add karein
+      app_store_connect: codemagic
     environment:
       flutter: stable
       xcode: latest
       cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.deliveazone.com
+      vars:
+        APP_STORE_APPLE_ID: 0000000000   # App Store Connect > App Information > Apple ID (number)
     scripts:
+      - name: Set up code signing
+        script: |
+          keychain initialize
+          app-store-connect fetch-signing-files "com.deliveazone.com" \
+            --type IOS_APP_STORE --create
+          keychain add-certificates
+          xcode-project use-profiles
       - name: Get Flutter packages
+        script: flutter packages pub get
+      - name: Install pods
         script: |
-          flutter packages pub get
-      - name: Build iOS Application (Release)
+          find . -name "Podfile" -execdir pod install \;
+      - name: Set build number
         script: |
-          flutter build ios --release --no-codesign
-      - name: Package IPA
+          LATEST=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID" || echo 0)
+          echo "BUILD_NUMBER=$((LATEST + 1))" >> $CM_ENV
+      - name: Build signed IPA
         script: |
-          cd build/ios/iphoneos
-          mkdir -p Payload
-          cp -r Runner.app Payload/
-          zip -r -q ../../../deliveazone_driver_app.ipa Payload/
+          flutter build ipa --release \
+            --build-name=1.0.0 \
+            --build-number=$BUILD_NUMBER \
+            --export-options-plist=/Users/builder/export_options.plist
     artifacts:
-      - "*.ipa"
-      - build/ios/iphoneos/Runner.app
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
