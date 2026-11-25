@@ -14,7 +14,7 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.deliveazone.com
       vars:
-        APP_STORE_APPLE_ID: 0000000000   # App Store Connect > App Information > Apple ID (number)
+        APP_STORE_APPLE_ID: 6839395780   # App Store Connect > App Information > Apple ID (number)
     scripts:
       - name: Set up code signing
         script: |
