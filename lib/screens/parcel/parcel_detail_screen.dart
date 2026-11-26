@@ -322,7 +322,7 @@ class _ParcelDetailScreenState extends State<ParcelDetailScreen> {
         children: [
           Row(
             children: [
-              Expanded(child: _buildInfoItem('COD Amount', 'Rs. ${Helpers.formatAmount(currentParcel.amount ?? 0)}')),
+              Expanded(child: _buildInfoItem('COD Amount', 'AED ${Helpers.formatAmount(currentParcel.amount ?? 0)}')),
               if (currentParcel.deliveryOtp != null) ...[
                 Container(width: 1, height: 30, color: Colors.grey.shade200, margin: const EdgeInsets.symmetric(horizontal: 8)),
                 Expanded(child: _buildInfoItem('OTP', currentParcel.deliveryOtp!)),
